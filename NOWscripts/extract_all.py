@@ -34,7 +34,7 @@ def files_by_datatype(files):
 files_by_dt = files_by_datatype(files)
 print({k:len(v) for k, v in files_by_dt.items()})
 
-def unzip_files(filenames, sourcepath, destpath, condition=lambda x: True):
+def unzip_files(filenames, sourcepath, destpath, del_cond=lambda x: False):
     successes = 0
     tries = 0
     for file in filenames:
@@ -62,10 +62,22 @@ def unzip_files(filenames, sourcepath, destpath, condition=lambda x: True):
             successes += 1
         except Exception as e:
             print(f"Exception while unzipping: {e}")
+        try:
+            new_files = os.listdir(dpath)
+            delete_files = [f for f in new_files if del_cond(f)]
+            for file in delete_files:
+                fpath = join(dpath, file)
+                if os.path.exists(fpath) and os.path.isfile(fpath):
+                    os.remove(fpath)
+            print(f"removed files: {'; '.join(delete_files)}")
+        except Exception as e:
+            print(f"Exception while clearing unwanted files: {e}"")
     print(f"\n\nOut of {len(filenames)} files: tried {tries} and \
 extracted {successes}\n\n")
 
-unzip_files(files_by_dt['db'], NOWfolder, datafolder)
+keep_in_us = lambda x: 'in' in x.lower() or 'us' in x.lower()
+
+unzip_files(files_by_dt['db'], NOWfolder, datafolder, del_cond=keep_in_us)
 unzip_files(files_by_dt['sources'], NOWfolder, datafolder)
 unzip_files(anomalies, NOWfolder, datafolder)
 
