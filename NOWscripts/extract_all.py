@@ -46,18 +46,18 @@ def unzip_files(filenames, sourcepath, destpath, condition=lambda x: True,
         try:
             ym = tuple(re.findall(r'\d+', file))
             print(ym)
-            assert len(ym) == 2, "what's up here"
+            assert len(ym) == 2, "no year/month found"
             y, m = ym
             date = f"{y}-{m}"
             dts = ['lexicon', 'db', 'text', 'wlp', 'sources']
             dt = [d for d in dts if d in file][0]
-            spath = join(sourcepath, file)
             dpath = join(destpath, dt, date)
             os.makedirs(dpath, exist_ok = True)
         except Exception as e:
             print(f"Exception during folder creation: {e}")
             dpath = destpath
         try:
+            spath = join(sourcepath, file)
             with ZipFile(spath, 'r') as zipObj:
                 zipObj.extractall(dpath)
             successes += 1
@@ -78,9 +78,10 @@ extracted {successes}\n\n")
 
 keep_in_us = lambda x: 'in' in x.lower() or 'us' in x.lower()
 
-unzip_files(files_by_dt['db'], NOWfolder, datafolder, del_cond=keep_in_us)
-unzip_files(files_by_dt['sources'], NOWfolder, datafolder)
-unzip_files(anomalies, NOWfolder, datafolder)
+if __name__=="__main__":
+    #unzip_files(files_by_dt['db'], NOWfolder, datafolder, del_cond=keep_in_us)
+    unzip_files(files_by_dt['sources'], NOWfolder, datafolder)
+    unzip_files(anomalies, NOWfolder, datafolder)
 
 
 
