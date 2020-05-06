@@ -34,7 +34,8 @@ def files_by_datatype(files):
 files_by_dt = files_by_datatype(files)
 print({k:len(v) for k, v in files_by_dt.items()})
 
-def unzip_files(filenames, sourcepath, destpath, del_cond=lambda x: False):
+def unzip_files(filenames, sourcepath, destpath, condition=lambda x: True,
+                    del_cond=lambda x: False):
     successes = 0
     tries = 0
     for file in filenames:
