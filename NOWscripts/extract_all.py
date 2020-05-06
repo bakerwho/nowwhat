@@ -49,7 +49,7 @@ def unzip_files(filenames, sourcepath, destpath, condition=lambda x: True):
             y, m = ym
             date = f"{y}-{m}"
             spath = join(sourcepath, file)
-            dpath = join(destpath, year)
+            dpath = join(destpath, date)
             os.makedirs(dpath, exist_ok = True)
         except Exception as e:
             print(f"Exception during folder creation: {e}")
