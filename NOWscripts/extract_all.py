@@ -71,7 +71,7 @@ def unzip_files(filenames, sourcepath, destpath, del_cond=lambda x: False):
                     os.remove(fpath)
             print(f"removed files: {'; '.join(delete_files)}")
         except Exception as e:
-            print(f"Exception while clearing unwanted files: {e}"")
+            print(f"Exception while clearing unwanted files: {e}")
     print(f"\n\nOut of {len(filenames)} files: tried {tries} and \
 extracted {successes}\n\n")
 
