@@ -54,13 +54,13 @@ def unzip_files(filenames, sourcepath, destpath, condition=lambda x: True):
             print("folder creation Exception")
             dpath = destpath
         try:
-            with ZipFile('sampleDir.zip', 'r') as zipObj:
+            with ZipFile(spath, 'r') as zipObj:
                 zipObj.extractall(dpath)
             successes += 1
         except Exception as e:
             print(f"Unzipping exception: {e}")
-    print(f"Out of {len(filenames)} files: tried {tries} and \
-            extracted {successes}")
+    print(f"\n\nOut of {len(filenames)} files: tried {tries} and \
+extracted {successes}\n\n")
 
 unzip_files(files_by_dt['db'], NOWfolder, datafolder)
 unzip_files(files_by_dt['sources'], NOWfolder, datafolder)
