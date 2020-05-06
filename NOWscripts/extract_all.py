@@ -44,21 +44,22 @@ def unzip_files(filenames, sourcepath, destpath, condition=lambda x: True):
         tries += 1
         try:
             ym = tuple(re.findall(r'\d+', file))
-            assert len(ym) == 2
+            print(ym)
+            assert len(ym) == 2, "what's up here"
             y, m = ym
             date = f"{y}-{m}"
             spath = join(sourcepath, file)
             dpath = join(destpath, year)
             os.makedirs(dpath, exist_ok = True)
-        except:
-            print("folder creation Exception")
+        except Exception as e:
+            print(f"Exception during folder creation: {e}")
             dpath = destpath
         try:
             with ZipFile(spath, 'r') as zipObj:
                 zipObj.extractall(dpath)
             successes += 1
         except Exception as e:
-            print(f"Unzipping exception: {e}")
+            print(f"Exception while unzipping: {e}")
     print(f"\n\nOut of {len(filenames)} files: tried {tries} and \
 extracted {successes}\n\n")
 
