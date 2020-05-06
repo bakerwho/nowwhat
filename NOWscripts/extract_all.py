@@ -48,8 +48,10 @@ def unzip_files(filenames, sourcepath, destpath, condition=lambda x: True):
             assert len(ym) == 2, "what's up here"
             y, m = ym
             date = f"{y}-{m}"
+            dts = ['lexicon', 'db', 'text', 'wlp', 'sources']
+            dt = [d for d in dts if d in file][0]
             spath = join(sourcepath, file)
-            dpath = join(destpath, date)
+            dpath = join(destpath, dt, date)
             os.makedirs(dpath, exist_ok = True)
         except Exception as e:
             print(f"Exception during folder creation: {e}")
