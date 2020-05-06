@@ -76,12 +76,12 @@ def unzip_files(filenames, sourcepath, destpath, condition=lambda x: True,
     print(f"\n\nOut of {len(filenames)} files: tried {tries} and \
 extracted {successes}\n\n")
 
-keep_in_us = lambda x: 'in' in x.lower() or 'us' in x.lower()
+del_in_us = lambda x: not ('in' in x.lower() or 'us' in x.lower())
 
 if __name__=="__main__":
-    #unzip_files(files_by_dt['db'], NOWfolder, datafolder, del_cond=keep_in_us)
-    unzip_files(files_by_dt['sources'], NOWfolder, datafolder)
-    unzip_files(anomalies, NOWfolder, datafolder)
+    unzip_files(files_by_dt['db'], NOWfolder, datafolder, del_cond=keep_in_us)
+    #unzip_files(files_by_dt['sources'], NOWfolder, datafolder)
+    #unzip_files(anomalies, NOWfolder, datafolder)
 
 
 
