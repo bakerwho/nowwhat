@@ -9,11 +9,11 @@ NOWfolder = '/project2/jevans/Davies_corpora/NOW/'
 datafolder = '/project2/jevans/aabir/NOWwhat/NOWdata'
 
 files = os.listdir(NOWfolder)
-anomalies = [f for f in NOWfiles if len(re.findall(r'\d+', f))==1]
+anomalies = [f for f in files if len(re.findall(r'\d+', f))==1]
 for an in anomalies:
     files.remove(an)
 
-numfiles = len(NOWfiles)
+numfiles = len(files)
 
 def files_by_year(files):
     years = {file: tuple(int(i) for i in re.findall(r'\d+', file)) for file in files}
