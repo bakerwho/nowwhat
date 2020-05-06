@@ -79,7 +79,7 @@ extracted {successes}\n\n")
 del_in_us = lambda x: not ('in' in x.lower() or 'us' in x.lower())
 
 if __name__=="__main__":
-    unzip_files(files_by_dt['db'], NOWfolder, datafolder, del_cond=keep_in_us)
+    unzip_files(files_by_dt['db'], NOWfolder, datafolder, del_cond=del_in_us)
     #unzip_files(files_by_dt['sources'], NOWfolder, datafolder)
     #unzip_files(anomalies, NOWfolder, datafolder)
 
