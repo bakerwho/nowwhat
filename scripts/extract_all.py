@@ -6,7 +6,7 @@ import re
 from collections import Counter, defaultdict
 
 NOWfolder = '/project2/jevans/Davies_corpora/NOW/'
-datafolder = '/project2/jevans/aabir/NOWwhat/NOWdata'
+datafolder = '/project2/jevans/aabir/NOWwhat/data'
 
 files = os.listdir(NOWfolder)
 anomalies = [f for f in files if len(re.findall(r'\d+', f))==1]
@@ -76,10 +76,11 @@ def unzip_files(filenames, sourcepath, destpath, condition=lambda x: True,
     print(f"\n\nOut of {len(filenames)} files: tried {tries} and \
 extracted {successes}\n\n")
 
-del_in_us = lambda x: not ('in' in x.lower() or 'us' in x.lower())
+keep_in_us = lambda x: not ('in' in x.lower() or 'us' in x.lower())
 
 if __name__=="__main__":
-    unzip_files(files_by_dt['db'], NOWfolder, datafolder, del_cond=del_in_us)
+    unzip_files(files_by_dt['text'], NOWfolder, datafolder, del_cond=keep_in_us)
+    unzip_files(files_by_dt['lexicon'], NOWfolder, datafolder, del_cond=keep_in_us)
     #unzip_files(files_by_dt['sources'], NOWfolder, datafolder)
     #unzip_files(anomalies, NOWfolder, datafolder)
 
@@ -88,4 +89,4 @@ if __name__=="__main__":
 
 
 
-# unzip -o /project2/jevans/Davies_corpora/NOW/db_16-10-ykw.zip -d /project2/jevans/aabir/NOWwhat/NOWdata/16-10/
+# unzip -o /project2/jevans/Davies_corpora/NOW/db_16-10-ykw.zip -d /project2/jevans/aabir/NOWwhat/data/16-10/
