@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 from os.path import join
 
-cwd = join(os.getcwd(),'16-11')
+cwd = join('/project2/jevans/aabir/NOWwhat/NOWdata','16-11')
 
 subfolders = [f for f in os.listdir(cwd) if os.path.isdir(join(cwd, f))]
 print(subfolders)
@@ -27,8 +27,3 @@ def file_preview(directory, condition=lambda x: True, num_lines=5):
     return in_files
 
 file_preview(cwd, lambda x: 'in' in x.lower())
-
-
-
-
-
