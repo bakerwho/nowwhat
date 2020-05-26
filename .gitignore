@@ -1,2 +1,4 @@
-.DS_Store
-NOWdata
+data
+xdata/in_data
+xdata/us_data
+xdata/src_data
