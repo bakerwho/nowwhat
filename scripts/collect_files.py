@@ -22,10 +22,10 @@ def copyfiles(d_folder, target, cond=lambda x: True):
         cond_files = [i for i in files if cond(i)]
         for i in cond_files:
             src = join(d_folder, new_f, i)
-            print(f'\tcopying {src}')
+            print(f"\tcopying {src}")
             copyfile(src, join(target, i.lower()))
 
-#if __name__ == '__main__':
-copyfiles(d_folder, in_target, cond=lambda x: 'IN' in x.lower() and '.txt' in x)
-copyfiles(d_folder, us_target, cond=lambda x: 'US' in x and.lower() '.txt' in x)
-copyfiles(s_folder, src_target, cond=lambda x: '.txt' in x)
+if __name__ == '__main__':
+    copyfiles(d_folder, in_target, cond=lambda x: 'IN' in x.lower() and '.txt' in x)
+    copyfiles(d_folder, us_target, cond=lambda x: 'US' in x and.lower() '.txt' in x)
+    copyfiles(s_folder, src_target, cond=lambda x: '.txt' in x)
