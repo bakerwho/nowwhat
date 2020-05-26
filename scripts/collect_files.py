@@ -27,5 +27,5 @@ def copyfiles(d_folder, target, cond=lambda x: True):
 
 if __name__ == '__main__':
     copyfiles(d_folder, in_target, cond=lambda x: 'IN' in x.lower() and '.txt' in x)
-    copyfiles(d_folder, us_target, cond=lambda x: 'US' in x and.lower() '.txt' in x)
+    copyfiles(d_folder, us_target, cond=lambda x: 'US' in x.lower() and '.txt' in x)
     copyfiles(s_folder, src_target, cond=lambda x: '.txt' in x)
