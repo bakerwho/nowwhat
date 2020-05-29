@@ -8,11 +8,11 @@ import time
 import os
 from os.path import join
 
-time_slice = [438, 430, 456]
-
 d_folder = '/project2/jevans/aabir/NOWwhat/xdata'
 in_folder = join(d_folder, 'in_data')
 us_folder = join(d_folder, 'us_data')
+
+corpus_folder = join(d_folder, 'corpus')
 
 def load_corpus_from_directory(in_folder):
     t1 = time.time()
@@ -28,10 +28,20 @@ def save_corpus_to_disk(location, corpus):
     print(f"# seconds = {int(t2-t1)}")
 
 # corpus = load_corpus_from_directory(in_folder)
-# save_corpus_to_disk(join(d_folder, 'in_corpus2.mm'), corpus)
+# save_corpus_to_disk(join(corpus_folder, 'in_corpus.mm'), corpus)
 
-corpus2 = mmcorpus.MmCorpus(join(d_folder, 'in_corpus2.mm'))
+corpus = mmcorpus.MmCorpus(join(corpus_folder, 'in_corpus.mm'))
 
-def ldaseq_analyze(corpus):
-    ldaseqmodel.LdaSeqModel(corpus=corpus, id2word=corpus.dictionary,
-                            time_slice=time_slice, num_topics=10e3)
+slice_df = pd.read_csv(join(d_folder, '..', 'notes', 'month_linects.txt'),
+                        sep=' ', names=['mth', 'ct'], index_col=False)
+
+slices = list(slice_df.ct)
+slices[-1] += corpus.num_docs-sum(slices)
+
+dictionary = Dictionary.load(join(corpus_folder, 'in_corpus_dict.dict'))
+
+t1 = time.time()
+ldaseqmodel.LdaSeqModel(corpus=corpus, id2word=dictionary,
+                            time_slice=slices, num_topics=500)
+t2 = time.time()
+print(f"# seconds = {int(t2-t1)}")
