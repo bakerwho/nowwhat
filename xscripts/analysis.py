@@ -30,18 +30,19 @@ def save_corpus_to_disk(location, corpus):
 # corpus = load_corpus_from_directory(in_folder)
 # save_corpus_to_disk(join(corpus_folder, 'in_corpus.mm'), corpus)
 
-corpus = mmcorpus.MmCorpus(join(corpus_folder, 'in_corpus.mm'))
+if __name__ == '__main__':
+    corpus = mmcorpus.MmCorpus(join(corpus_folder, 'in_corpus.mm'))
 
-slice_df = pd.read_csv(join(d_folder, '..', 'notes', 'month_linects.txt'),
-                        sep=' ', names=['mth', 'ct'], index_col=False)
+    slice_df = pd.read_csv(join(d_folder, '..', 'notes', 'month_linects.txt'),
+                            sep=' ', names=['mth', 'ct'], index_col=False)
 
-slices = list(slice_df.ct)
-slices[-1] += corpus.num_docs-sum(slices)
+    slices = list(slice_df.ct)
+    slices[-1] += corpus.num_docs-sum(slices)
 
-dictionary = Dictionary.load(join(corpus_folder, 'in_corpus_dict.dict'))
+    dictionary = Dictionary.load(join(corpus_folder, 'in_corpus_dict.dict'))
 
-t1 = time.time()
-ldaseqmodel.LdaSeqModel(corpus=corpus, id2word=dictionary,
-                            time_slice=slices, num_topics=500)
-t2 = time.time()
-print(f"# seconds = {int(t2-t1)}")
+    t1 = time.time()
+    ldaseqmodel.LdaSeqModel(corpus=corpus, id2word=dictionary,
+                                time_slice=slices, num_topics=500)
+    t2 = time.time()
+    print(f"# seconds = {int(t2-t1)}")
