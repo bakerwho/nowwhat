@@ -9,5 +9,7 @@
 module load Anaconda3/5.3.0
 
 echo "run started at $(date)"
-python /project2/jevans/aabir/NOWwhat/xscripts/analysis.py
+
+python ../xscripts/analysis.py
+
 echo "run ended at $(date)"
