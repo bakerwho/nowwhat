@@ -32,10 +32,10 @@ class MthSentiment():
         self.subjectivities.append(subj)
         if pol > 0.9 or (pol > 0.45 and pol < 0.55) or pol < 0.1:
             self.pollines.append(line)
-            self.pols.append(pols)
+            self.pols.append(pol)
         if subj > 0.9 or (subj > 0.45 and subj < 0.55) or subj < 0.1:
             self.subjlines.append(line)
-            self.subjs.append(subjs)
+            self.subjs.append(subj)
 
     def mean_pol_subj(self):
         return np.mean(self.polarities), np.mean(self.subjectivities)
@@ -57,7 +57,7 @@ class MthSentiment():
 
 def directory_sentiment(in_folder, verbose=False):
     files = [i for i in os.listdir(in_folder) if os.path.isfile(join(in_folder, i))]
-    print(files)
+    #print(files)
     months = []
     polmeans, subjmeans = [], []
     pcols, scols = ['y','m','line','polarity','label'], ['y','m','line','subjectivity','label']
