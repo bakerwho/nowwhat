@@ -67,7 +67,7 @@ def directory_sentiment(in_folder, verbose=False):
         t1 = time.time()
         print(f'file: {file}')
         month = file.split('.')[-2][-8:-3]
-        print(month)
+        #print(month)
         months.append(month)
         MS = MthSentiment(month)
         with open(join(in_folder, file), 'r') as f:
@@ -76,13 +76,13 @@ def directory_sentiment(in_folder, verbose=False):
                 tb = TextBlob(line)
                 pol, subj = tb.sentiment.polarity, tb.sentiment.subjectivity
                 MS.add_data(line, pol, subj)
-        print(f'{line}, {pol}, {subj}')
+        #print(f'{line}, {pol}, {subj}')
         polmeans.append(MS.polarities)
         subjmeans.append(MS.subjectivities)
         pdf_, sdf_ = MS.pol_subj_dfs()
         for df in [pdf_, sdf_]:
             df['y']=month.split('-')[1]
-            df['m']=monthssplit('-')[0]
+            df['m']=month.split('-')[0]
         pdf = pd.concat((pdf, pdf_))
         sdf = pd.concat((sdf, sdf_))
         if num == 0 and verbose:
