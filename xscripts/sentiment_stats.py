@@ -65,7 +65,7 @@ def directory_sentiment(in_folder, verbose=False):
     for num, file in enumerate(files):
         t1 = time.time()
         print(f'file:{file}')
-        month = file.split('.')[-2][-5:]
+        month = file.split('.')[-2][-7:-3]
         print(month)
         months.append(month)
         MS = MthSentiment(month)
