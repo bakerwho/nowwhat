@@ -56,7 +56,7 @@ class MthSentiment():
         return poldf, subjdf
 
 def directory_sentiment(in_folder, verbose=False):
-    files = [i for i in os.listdir(in_folder) if os.path.isfile(i)]
+    files = [i for i in os.listdir(in_folder) if os.path.isfile(join(in_folder, i))]
     print(files)
     months = []
     polmeans, subjmeans = [], []
