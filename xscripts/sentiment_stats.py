@@ -5,6 +5,7 @@ from os.path import join
 
 import numpy as np
 import pandas as pd
+import time
 
 now_folder = '/project2/jevans/aabir/NOWwhat'
 d_folder = '/project2/jevans/aabir/NOWwhat/xdata'
@@ -54,13 +55,14 @@ class MthSentiment():
         subjdf['label'] = subjdf.polarity.apply(hilomid)
         return poldf, subjdf
 
-def directory_sentiment(in_folder):
+def directory_sentiment(in_folder, verbose=False):
     files = [i for i in os.listdir(in_folder) if os.path.isfile(i)]
     months = []
     polmeans, subjmeans = [], []
     pcols, scols = ['y','m','line','polarity','label'], ['y','m','line','subjectivity','label']
     pdf, sdf = pd.DataFrame(None, columns=pcols), pd.DataFrame(None, columns=scols)
-    for file in files:
+    for num, file in enumerate(files):
+        t1 = time.time()
         month = file.split('.')[-2][-5:]
         months.append(month)
         MS = MthSentiment(month)
@@ -78,6 +80,9 @@ def directory_sentiment(in_folder):
             df['m']=monthssplit('-')[0]
         pdf = pd.concat((pdf, pdf_))
         sdf = pd.concat((sdf, sdf_))
+        if num == 0 and verbose:
+            t2 = time.time()
+            print(f"Completed reading first file {file} | time taken = {t2-t1} s")
     pdf.reset_index(drop=True, inplace=True)
     sdf.reset_index(drop=True, inplace=True)
     meansdf = pd.DataFrame({'ym':months, 'meanpolarity':polmeans,
