@@ -52,7 +52,7 @@ class MthSentiment():
     def pol_subj_dfs(self):
         poldf = pd.DataFrame({'line':self.pollines, 'polarity':self.pols})
         subjdf = pd.DataFrame({'line':self.subjlines, 'subjectivity':self.subjs})
-        poldf['label'] = poldf['polarity']apply(self.hilomid)
+        poldf['label'] = poldf['polarity'].apply(self.hilomid)
         subjdf['label'] = subjdf['subjectivity'].apply(self.hilomid)
         return poldf, subjdf
 
@@ -72,7 +72,8 @@ def directory_sentiment(in_folder, verbose=False):
         MS = MthSentiment(month)
         with open(join(in_folder, file), 'r') as f:
             for line in f:
-                tb = TextBlob(preprocess_string(line))
+                line = ' '.join(preprocess_string(line))
+                tb = TextBlob(line)
                 pol, subj = tb.sentiment.polarity, tb.sentiment.subjectivity
                 MS.add_data(line, pol, subj)
         print(f'{line}, {pol}, {subj}')
