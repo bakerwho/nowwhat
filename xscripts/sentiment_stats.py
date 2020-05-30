@@ -83,8 +83,8 @@ def directory_sentiment(in_folder, verbose=False):
         for df in [pdf_, sdf_]:
             df['y']=month.split('-')[1]
             df['m']=month.split('-')[0]
-        pdf = pd.concat((pdf, pdf_), ignore_index=True)
-        sdf = pd.concat((sdf, sdf_), ignore_index=True)
+        pdf = pd.concat((pdf, pdf_), ignore_index=True, sort=True)
+        sdf = pd.concat((sdf, sdf_), ignore_index=True, sort=True)
         if num == 0 and verbose:
             t2 = time.time()
             print(f"Completed reading first file {file} | time taken = {t2-t1} s")
