@@ -74,7 +74,7 @@ def directory_sentiment(in_folder, verbose=False):
                 tb = TextBlob(line)
                 pol, subj = tb.sentiment.polarity, tb.sentiment.subjectivity
                 MS.add_data(line, pol, subj)
-        print(f'{line}, {polarity}, {subjectivity}')
+        print(f'{line}, {pol}, {subj}')
         polmeans.append(MS.polarities)
         subjmeans.append(MS.subjectivities)
         pdf_, sdf_ = MS.pol_subj_dfs()
@@ -96,4 +96,4 @@ def directory_sentiment(in_folder, verbose=False):
 
 
 if __name__ == '__main__':
-    directory_sentiment(in_folder)
+    directory_sentiment(in_folder, verbose=True)
