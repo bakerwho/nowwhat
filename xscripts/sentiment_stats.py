@@ -57,6 +57,7 @@ class MthSentiment():
 
 def directory_sentiment(in_folder, verbose=False):
     files = [i for i in os.listdir(in_folder) if os.path.isfile(i)]
+    print(files)
     months = []
     polmeans, subjmeans = [], []
     pcols, scols = ['y','m','line','polarity','label'], ['y','m','line','subjectivity','label']
