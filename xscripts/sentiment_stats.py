@@ -89,7 +89,7 @@ def directory_sentiment(in_folder, verbose=False):
                             'meansubjectivity':subjmeans})
     pdf.to_csv(join(now_folder, 'resultdata', 'polarity.csv'), index=False)
     sdf.to_csv(join(now_folder, 'resultdata', 'subjectivity.csv'), index=False)
-    meansdf.csv(join(now_folder, 'resultdata', 'mean_subj_pol.csv'), index=False)
+    meansdf.to_csv(join(now_folder, 'resultdata', 'mean_subj_pol.csv'), index=False)
 
 
 if __name__ == '__main__':
