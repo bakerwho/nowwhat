@@ -40,7 +40,7 @@ class MthSentiment():
     def mean_pol_subj(self):
         return np.mean(self.polarities), np.mean(self.subjectivities)
 
-    def hilomid(x):
+    def hilomid(self, x):
         if x > 0.9:
             return 'hi'
         elif x > 0.45 and x < 0.55:
@@ -51,8 +51,8 @@ class MthSentiment():
     def pol_subj_dfs(self):
         poldf = pd.DataFrame({'line':self.pollines, 'polarity':self.pols})
         subjdf = pd.DataFrame({'line':self.subjlines, 'subjectivity':self.subjs})
-        poldf['label'] = poldf.polarity.apply(hilomid)
-        subjdf['label'] = subjdf.polarity.apply(hilomid)
+        poldf['label'] = poldf.polarity.apply(self.hilomid)
+        subjdf['label'] = subjdf.polarity.apply(self.hilomid)
         return poldf, subjdf
 
 def directory_sentiment(in_folder, verbose=False):
