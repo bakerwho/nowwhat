@@ -1,4 +1,5 @@
 from textblob import TextBlob
+from gensim.parsing.preprocessing import preprocess_string
 
 import os
 from os.path import join
@@ -51,8 +52,8 @@ class MthSentiment():
     def pol_subj_dfs(self):
         poldf = pd.DataFrame({'line':self.pollines, 'polarity':self.pols})
         subjdf = pd.DataFrame({'line':self.subjlines, 'subjectivity':self.subjs})
-        poldf['label'] = poldf.polarity.apply(self.hilomid)
-        subjdf['label'] = subjdf.polarity.apply(self.hilomid)
+        poldf['label'] = poldf['polarity']apply(self.hilomid)
+        subjdf['label'] = subjdf['subjectivity'].apply(self.hilomid)
         return poldf, subjdf
 
 def directory_sentiment(in_folder, verbose=False):
@@ -64,14 +65,14 @@ def directory_sentiment(in_folder, verbose=False):
     pdf, sdf = pd.DataFrame(None, columns=pcols), pd.DataFrame(None, columns=scols)
     for num, file in enumerate(files):
         t1 = time.time()
-        print(f'file:{file}')
+        print(f'file: {file}')
         month = file.split('.')[-2][-8:-3]
         print(month)
         months.append(month)
         MS = MthSentiment(month)
         with open(join(in_folder, file), 'r') as f:
             for line in f:
-                tb = TextBlob(line)
+                tb = TextBlob(preprocess_string(line))
                 pol, subj = tb.sentiment.polarity, tb.sentiment.subjectivity
                 MS.add_data(line, pol, subj)
         print(f'{line}, {pol}, {subj}')
