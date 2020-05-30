@@ -5,6 +5,8 @@ from gensim.corpora import Dictionary, textcorpus, mmcorpus
 from gensim.matutils import hellinger
 import time
 
+from gensim.models.word2vec import Word2Vec
+
 import os
 from os.path import join
 
@@ -40,7 +42,7 @@ if __name__ == '__main__':
     slices[-1] += corpus.num_docs-sum(slices)
 
     dictionary = Dictionary.load(join(corpus_folder, 'in_corpus_dict.dict'))
-
+    print('loaded corpus and dictionary')
     t1 = time.time()
     ldaseqmodel.LdaSeqModel(corpus=corpus, id2word=dictionary,
                                 time_slice=slices, num_topics=500)
