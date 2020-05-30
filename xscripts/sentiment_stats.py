@@ -56,7 +56,7 @@ class MthSentiment():
         return poldf, subjdf
 
 def directory_sentiment(in_folder, verbose=False):
-    files = [i for i in os.listdir(in_folder) if os.path.isfile(join(in_folder, i))]
+    files = sorted([i for i in os.listdir(in_folder) if os.path.isfile(join(in_folder, i))])
     #print(files)
     months = []
     polmeans, subjmeans = [], []
@@ -64,7 +64,9 @@ def directory_sentiment(in_folder, verbose=False):
     pdf, sdf = pd.DataFrame(None, columns=pcols), pd.DataFrame(None, columns=scols)
     for num, file in enumerate(files):
         t1 = time.time()
+        print(f'file:{file}')
         month = file.split('.')[-2][-5:]
+        print(month)
         months.append(month)
         MS = MthSentiment(month)
         with open(join(in_folder, file), 'r') as f:
@@ -72,9 +74,9 @@ def directory_sentiment(in_folder, verbose=False):
                 tb = TextBlob(line)
                 pol, subj = tb.sentiment.polarity, tb.sentiment.subjectivity
                 MS.add_data(line, pol, subj)
-        polm, subjm = MS.mean_pol_subj()
-        polmeans.append(polm)
-        subjmeans.append(subjm)
+        print(f'{line}, {polarity}, {subjectivity}')
+        polmeans.append(MS.polarities)
+        subjmeans.append(MS.subjectivities)
         pdf_, sdf_ = MS.pol_subj_dfs()
         for df in [pdf_, sdf_]:
             df['y']=month.split('-')[1]
@@ -86,11 +88,11 @@ def directory_sentiment(in_folder, verbose=False):
             print(f"Completed reading first file {file} | time taken = {t2-t1} s")
     pdf.reset_index(drop=True, inplace=True)
     sdf.reset_index(drop=True, inplace=True)
-    meansdf = pd.DataFrame({'ym':months, 'meanpolarity':polmeans,
-                            'meansubjectivity':subjmeans})
-    pdf.to_csv(join(now_folder, 'resultdata', 'polarity.csv'), index=False)
-    sdf.to_csv(join(now_folder, 'resultdata', 'subjectivity.csv'), index=False)
-    meansdf.to_csv(join(now_folder, 'resultdata', 'mean_subj_pol.csv'), index=False)
+    meansdf = pd.DataFrame({'ym':months, 'polarity':polmeans,
+                            'subjectivity':subjmeans})
+    pdf.to_csv(join(now_folder, 'resultdata', 'labelpolarity.csv'), index=False)
+    sdf.to_csv(join(now_folder, 'resultdata', 'labelsubjectivity.csv'), index=False)
+    meansdf.to_csv(join(now_folder, 'resultdata', 'all_subj_pol.csv'), index=False)
 
 
 if __name__ == '__main__':
