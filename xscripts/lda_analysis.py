@@ -32,15 +32,15 @@ def save_corpus_to_disk(location, corpus):
 # corpus = load_corpus_from_directory(in_folder)
 # save_corpus_to_disk(join(corpus_folder, 'in_corpus.mm'), corpus)
 
-if __name__ == '__main__':
+def bruteforce_lda_entire_corpus():
+    # this does not work
+    # reports Bus error on slurm
+    # probably requires way too much RAM/compute power
     corpus = mmcorpus.MmCorpus(join(corpus_folder, 'in_corpus.mm'))
-
     slice_df = pd.read_csv(join(d_folder, '..', 'notes', 'month_linects.txt'),
                             sep=' ', names=['mth', 'ct'], index_col=False)
-
     slices = list(slice_df.ct)
     slices[-1] += corpus.num_docs-sum(slices)
-
     dictionary = Dictionary.load(join(corpus_folder, 'in_corpus_dict.dict'))
     print('loaded corpus and dictionary')
     t1 = time.time()
@@ -48,3 +48,15 @@ if __name__ == '__main__':
                                 time_slice=slices, num_topics=500)
     t2 = time.time()
     print(f"# seconds = {int(t2-t1)}")
+
+def gentler_lda_entire_corpus(in_folder):
+    files = sorted([i for i in os.listdir(in_folder) if os.path.isfile(join(in_folder, i))])
+    #print(files)
+    months = []
+    for file in files:
+        month = file.split('.')[-2][-8:-3]
+        mcorpus = textcorpus.TextCorpus(join(in_folder, file), lines_are_documents=True)
+        ldaseqmodel.LdaSeqModel(corpus=mcorpus, id2word=mcorpus.dictionary, num_topics=100)
+
+
+if __name__ == '__main__':
