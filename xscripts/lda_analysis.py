@@ -88,5 +88,5 @@ def gentler_lda_entire_corpus(in_folder, ofile, wordlist, num_topics=20):
 
 
 if __name__ == '__main__':
-    gentler_lda_entire_corpus(in_folder, join(resultdata, 'lda_output.txt'),
+    gentler_lda_entire_corpus(in_folder, join(result_folder, 'lda_output.txt'),
                                 indian_politics_wordlist)
