@@ -3,6 +3,7 @@ import pandas as pd
 from gensim.models import ldaseqmodel, ldamodel
 from gensim.corpora import Dictionary, textcorpus, mmcorpus
 from gensim.matutils import hellinger
+from gensim.parsing import preprocessing
 import time
 import pprint
 
@@ -53,21 +54,24 @@ def bruteforce_lda_entire_corpus():
     print(f"# seconds = {int(t2-t1)}")
 
 indian_politics_wordlist = ['election', 'politics', 'minister',
-        'congress', 'bjp', 'advani', 'manmohan', 'singh', 'sonia', 'gandhi'
+        'congress', 'bjp', 'advani', 'manmohan', 'singh', 'sonia', 'gandhi',
         'modi', 'narendra', 'rahul']
 
 class conditionalCorpus(textcorpus.TextCorpus):
-    def get_texts(self, wordlist):
+    self.wordlist = ['election', 'politics', 'minister',
+            'congress', 'bjp', 'advani', 'manmohan', 'singh', 'sonia', 'gandhi',
+            'modi', 'narendra', 'rahul']
+    def get_texts(self):
         for doc in self.getstream():
             flag = False
-            for w in wordlist:
-                if w in doc:
+            for w in self.wordlist:
+                if w in doc.lower():
                     flag = True
             if flag:
-                yield doc.split()
+                yield preprocessing.preprocess_string(doc)
 
 
-def gentler_lda_entire_corpus(in_folder, ofile, wordlist, num_topics=20):
+def gentler_lda_entire_corpus(in_folder, ofile, wordlist, num_topics=30):
     files = sorted([i for i in os.listdir(in_folder) if os.path.isfile(join(in_folder, i))])
     #print(files)
     months = []
@@ -75,17 +79,17 @@ def gentler_lda_entire_corpus(in_folder, ofile, wordlist, num_topics=20):
         f.write(pprint.pformat(locals()))
         for file in files:
             month = file.split('.')[-2][-8:-3]
-            f.write(f'\n====\n\nmonth {month}')
+            f.write(f'\n{"="*40}\n\nmonth {month}')
             mcorpus = textcorpus.TextCorpus(join(in_folder, file))#, lines_are_documents=True)
             lda = ldamodel.LdaModel(mcorpus, num_topics=num_topics, id2word=mcorpus.dictionary)
             topics = lda.get_topics()
-            f.write(pprint.pformat(lda.show_topics(num_topics, num_words=15)))
+            f.write(pprint.pformat(lda.show_topics(num_topics, num_words=30))+'\n')
             for w in wordlist:
                 try:
                     topics = lda.get_term_topics(w)
-                    f.write(f'\t{w}: {pprint.pformat(topics)}')
+                    f.write(f'\t{w}: {pprint.pformat(topics)}\t')
                 except:
-                    f.write(f'\t{w}: outofvocab')    
+                    f.write(f'\t{w}: outofvocab\t')
             print(f'month {month} LDA complete')
 
 
