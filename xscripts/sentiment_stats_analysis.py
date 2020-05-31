@@ -32,7 +32,7 @@ pol = [np.array(i) for i in all_subj_pol.subjectivity]
 ym = all_subj_pol['ym']
 
 def box_plot(data, labels, xyt, savepath):
-    plt.figure(figsize=(24, 8))
+    plt.figure(figsize=(28, 10))
     plt.boxplot(subj, labels=ym)
     plt.xlabel(xyt[0], fontsize=18)
     plt.xticks(rotation=45)
