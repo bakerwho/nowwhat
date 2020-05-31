@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-from gensim.models import ldaseqmodel
+from gensim.models import ldaseqmodel, ldamodel
 from gensim.corpora import Dictionary, textcorpus, mmcorpus
 from gensim.matutils import hellinger
 import time
@@ -10,11 +10,13 @@ from gensim.models.word2vec import Word2Vec
 import os
 from os.path import join
 
+now_folder = '/project2/jevans/aabir/NOWwhat/'
 d_folder = '/project2/jevans/aabir/NOWwhat/xdata'
 in_folder = join(d_folder, 'in_data')
 us_folder = join(d_folder, 'us_data')
 
 corpus_folder = join(d_folder, 'corpus')
+result_folder = join(now_folder, 'resultdata')
 
 def load_corpus_from_directory(in_folder):
     t1 = time.time()
@@ -49,14 +51,41 @@ def bruteforce_lda_entire_corpus():
     t2 = time.time()
     print(f"# seconds = {int(t2-t1)}")
 
-def gentler_lda_entire_corpus(in_folder):
+indian_politics_wordlist = ['election', 'politics', 'minister',
+        'congress', 'bjp', 'advani', 'manmohan', 'singh', 'sonia', 'gandhi'
+        'modi', 'narendra', 'rahul']
+
+class conditionalCorpus(textcorpus.TextCorpus):
+    def get_texts(self, wordlist):
+        for doc in self.getstream():
+            flag = False
+            for w in wordlist:
+                if w in doc:
+                    flag = True
+            if flag:
+                yield doc.split()
+
+
+def gentler_lda_entire_corpus(in_folder, ofile, wordlist, num_topics=20):
     files = sorted([i for i in os.listdir(in_folder) if os.path.isfile(join(in_folder, i))])
     #print(files)
     months = []
-    for file in files:
-        month = file.split('.')[-2][-8:-3]
-        mcorpus = textcorpus.TextCorpus(join(in_folder, file), lines_are_documents=True)
-        ldaseqmodel.LdaSeqModel(corpus=mcorpus, id2word=mcorpus.dictionary, num_topics=100)
+    with open(ofile, 'w') as f:
+        f.write(locals())
+        for file in files:
+            month = file.split('.')[-2][-8:-3]
+            f.write(f'\n====\n\nmonth {month}')
+            mcorpus = textcorpus.TextCorpus(join(in_folder, file), lines_are_documents=True)
+            lda = ldamodel.LdaModel(mcorpus, num_topics=num_topics, id2word=mcorpus.dictionary)
+            topics = lda.get_topics()
+            f.write(lda.show_topics(num_topics, num_words=15))
+            for w in wordlist:
+                for ct, tup in enumerate(lda.get_term_topics(w)):
+                    if ct == 5:
+                        break
+                    f.write(f'\t{w}: {lda.get_term_topics(w)}')
+
 
 
 if __name__ == '__main__':
+    gentler_lda_entire_corpus(in_folder, join(resultdata, 'lda_output.txt'))
