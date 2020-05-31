@@ -76,7 +76,7 @@ def gentler_lda_entire_corpus(in_folder, ofile, wordlist, num_topics=20):
         for file in files:
             month = file.split('.')[-2][-8:-3]
             f.write(f'\n====\n\nmonth {month}')
-            mcorpus = textcorpus.TextCorpus(join(in_folder, file), lines_are_documents=True)
+            mcorpus = textcorpus.TextCorpus(join(in_folder, file))#, lines_are_documents=True)
             lda = ldamodel.LdaModel(mcorpus, num_topics=num_topics, id2word=mcorpus.dictionary)
             topics = lda.get_topics()
             f.write(pprint.format(lda.show_topics(num_topics, num_words=15)))
