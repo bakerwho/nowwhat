@@ -22,16 +22,6 @@ all_subj_pol = pd.read_csv(join(result_folder, "politics_all_subj_pol.csv"))
 labelpolarity = pd.read_csv(join(result_folder, "politics_labelpolarity.csv"))
 labelsubjectivity = pd.read_csv(join(result_folder, "politics_labelsubjectivity.csv"))
 
-"""
-all_subj_pol['y'] = all_subj_pol.ym.apply(lambda x : int(x[:2]))
-all_subj_pol['m'] = all_subj_pol.ym.apply(lambda x : int(x[-2:]))
-
-all_subj_pol['meanpol'] = all_subj_pol.polarity.apply(lambda x : np.mean(x))
-all_subj_pol['stdpol'] = all_subj_pol.polarity.apply(lambda x : np.std(x))
-all_subj_pol['meansubj'] = all_subj_pol.subjectivity.apply(lambda x : np.mean(x))
-all_subj_pol['stdsubj'] = all_subj_pol.subjectivity.apply(lambda x : np.std(x))
-"""
-
 #all_subj_pol.to_csv(join(result_folder, "politics_all_subj_pol.csv"), index=False)
 
 for col in ['polarity', 'subjectivity']:
@@ -39,6 +29,18 @@ for col in ['polarity', 'subjectivity']:
 
 subj = [np.array(i) for i in all_subj_pol.polarity]
 pol = [np.array(i) for i in all_subj_pol.subjectivity]
-ym = all_subj_pol[ym]
-plt.boxplot(subj, labels=ym)
-plt.savefig(join())
+ym = all_subj_pol['ym']
+
+def box_plot(data, labels, xyt, savepath):
+    plt.figure(figsize=(20, 10))
+    plt.boxplot(subj, labels=ym)
+    plt.xlabel(xyt[0], rotation=45)
+    plt.ylabel(xyt[1])
+    plt.title(xyt[2])
+    plt.savefig(savepath)
+    plt.close('all')
+
+box_plot(subj, ym, ('year-month', 'subjectivity score',''),
+                    join(img_folder, 'subjectivity_scores.png'))
+box_plot(pol, ym, ('year-month', 'polarity score',''),
+                    join(img_folder, 'polarity_scores.png'))
