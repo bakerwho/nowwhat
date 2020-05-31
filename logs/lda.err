@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/project2/jevans/aabir/NOWwhat/xscripts/lda_analysis.py", line 98, in <module>
+    indian_politics_wordlist)
+  File "/project2/jevans/aabir/NOWwhat/xscripts/lda_analysis.py", line 83, in gentler_lda_entire_corpus
+    mcorpus = textcorpus.conditionalCorpus(join(in_folder, file))#, lines_are_documents=True)
+AttributeError: module 'gensim.corpora.textcorpus' has no attribute 'conditionalCorpus'
