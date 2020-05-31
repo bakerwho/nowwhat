@@ -72,7 +72,7 @@ def gentler_lda_entire_corpus(in_folder, ofile, wordlist, num_topics=20):
     #print(files)
     months = []
     with open(ofile, 'w') as f:
-        f.write(locals())
+        f.write(pprint.format(locals()))
         for file in files:
             month = file.split('.')[-2][-8:-3]
             f.write(f'\n====\n\nmonth {month}')
