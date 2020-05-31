@@ -81,10 +81,11 @@ def gentler_lda_entire_corpus(in_folder, ofile, wordlist, num_topics=20):
             topics = lda.get_topics()
             f.write(pprint.pformat(lda.show_topics(num_topics, num_words=15)))
             for w in wordlist:
-                for ct, tup in enumerate(lda.get_term_topics(w)):
-                    if ct == 5:
-                        break
-                    f.write(f'\t{w}: {lda.get_term_topics(w)}')
+                try:
+                    topics = lda.get_term_topics(w)
+                    f.write(f'\t{w}: {pprint.pformat(topics)}')
+                except:
+                    f.write(f'\t{w}: outofvocab')    
             print(f'month {month} LDA complete')
 
 
