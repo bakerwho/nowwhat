@@ -57,7 +57,7 @@ class MthSentiment():
         return poldf, subjdf
 
 def directory_sentiment(in_folder, verbose=False, filecond=None, linecond=None,
-                        saveprefix=''):
+                        save_prefix=''):
     files = sorted([i for i in os.listdir(in_folder) if os.path.isfile(join(in_folder, i))])
     #print(files)
     months = []
@@ -117,4 +117,4 @@ check_ind_politics = lambda x : check_wordlist(x, indian_politics_wordlist)
 
 if __name__ == '__main__':
     directory_sentiment(in_folder, verbose=True, linecond=check_ind_politics,
-                            saveprefix='politics_')
+                            save_prefix='politics_')
