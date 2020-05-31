@@ -84,7 +84,7 @@ def gentler_lda_entire_corpus(in_folder, ofile, wordlist, num_topics=20):
                     if ct == 5:
                         break
                     f.write(f'\t{w}: {lda.get_term_topics(w)}')
-
+            print(f'month {month} LDA complete')
 
 
 if __name__ == '__main__':
