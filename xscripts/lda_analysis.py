@@ -58,13 +58,13 @@ indian_politics_wordlist = ['election', 'politics', 'minister',
         'modi', 'narendra', 'rahul']
 
 class conditionalCorpus(textcorpus.TextCorpus):
-    self.wordlist = ['election', 'politics', 'minister',
+    wordlist = ['election', 'politics', 'minister',
             'congress', 'bjp', 'advani', 'manmohan', 'singh', 'sonia', 'gandhi',
             'modi', 'narendra', 'rahul']
     def get_texts(self):
         for doc in self.getstream():
             flag = False
-            for w in self.wordlist:
+            for w in wordlist:
                 if w in doc.lower():
                     flag = True
             if flag:
@@ -80,7 +80,7 @@ def gentler_lda_entire_corpus(in_folder, ofile, wordlist, num_topics=30):
         for file in files:
             month = file.split('.')[-2][-8:-3]
             f.write(f'\n{"="*40}\n\nmonth {month}')
-            mcorpus = textcorpus.TextCorpus(join(in_folder, file))#, lines_are_documents=True)
+            mcorpus = textcorpus.conditionalCorpus(join(in_folder, file))#, lines_are_documents=True)
             lda = ldamodel.LdaModel(mcorpus, num_topics=num_topics, id2word=mcorpus.dictionary)
             topics = lda.get_topics()
             f.write(pprint.pformat(lda.show_topics(num_topics, num_words=30))+'\n')
