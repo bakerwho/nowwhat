@@ -117,4 +117,4 @@ check_ind_politics = lambda x : check_wordlist(x, indian_politics_wordlist)
 
 if __name__ == '__main__':
     directory_sentiment(in_folder, verbose=True, linecond=check_ind_politics,
-                            save_prefix='politics_')
+                            saveprefix='politics_')
