@@ -64,8 +64,12 @@ def directory_sentiment(in_folder, verbose=False, filecond=None, linecond=None,
     polmeans, subjmeans = [], []
     pcols, scols = ['y','m','line','polarity','label'], ['y','m','line','subjectivity','label']
     pdf, sdf = pd.DataFrame(None, columns=pcols), pd.DataFrame(None, columns=scols)
+    if filecond is None:
+        filecond = lambda x: True
+    if linecond is None:
+        linecond = lambda x: True
     for num, file in enumerate(files):
-        if filecond is None or not filecond(file):
+        if not filecond(file):
             continue
         t1 = time.time()
         print(f'file: {file}')
@@ -76,7 +80,7 @@ def directory_sentiment(in_folder, verbose=False, filecond=None, linecond=None,
         with open(join(in_folder, file), 'r') as f:
             for line in f:
                 line = ' '.join(preprocess_string(line))
-                if linecond is None or not linecond(line):
+                if not linecond(line):
                     continue
                 tb = TextBlob(line)
                 pol, subj = tb.sentiment.polarity, tb.sentiment.subjectivity
