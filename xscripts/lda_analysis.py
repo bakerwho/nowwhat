@@ -79,7 +79,7 @@ def gentler_lda_entire_corpus(in_folder, ofile, wordlist, num_topics=20):
             mcorpus = textcorpus.TextCorpus(join(in_folder, file), lines_are_documents=True)
             lda = ldamodel.LdaModel(mcorpus, num_topics=num_topics, id2word=mcorpus.dictionary)
             topics = lda.get_topics()
-            f.write(pprint.format(lda.show_topics(num_topics, num_words=15))))
+            f.write(pprint.format(lda.show_topics(num_topics, num_words=15)))
             for w in wordlist:
                 for ct, tup in enumerate(lda.get_term_topics(w)):
                     if ct == 5:
