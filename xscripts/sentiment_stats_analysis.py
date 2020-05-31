@@ -27,8 +27,8 @@ labelsubjectivity = pd.read_csv(join(result_folder, "politics_labelsubjectivity.
 for col in ['polarity', 'subjectivity']:
     all_subj_pol[col] = all_subj_pol[col].apply(lambda x : ast.literal_eval(x))
 
-subj = [np.array(i) for i in all_subj_pol.polarity]
-pol = [np.array(i) for i in all_subj_pol.subjectivity]
+subj = [np.array(i) for i in all_subj_pol.subjectivity]
+pol = [np.array(i) for i in all_subj_pol.polarity]
 ym = all_subj_pol['ym']
 
 def box_plot(data, labels, xyt, savepath):
