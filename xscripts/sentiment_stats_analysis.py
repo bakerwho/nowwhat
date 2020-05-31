@@ -32,16 +32,16 @@ pol = [np.array(i) for i in all_subj_pol.subjectivity]
 ym = all_subj_pol['ym']
 
 def box_plot(data, labels, xyt, savepath):
-    plt.figure(figsize=(30, 10))
+    plt.figure(figsize=(24, 8))
     plt.boxplot(subj, labels=ym)
-    plt.xlabel(xyt[0])
+    plt.xlabel(xyt[0], fontsize=18)
     plt.xticks(rotation=45)
-    plt.ylabel(xyt[1])
+    plt.ylabel(xyt[1], fontsize=18)
     plt.title(xyt[2])
     plt.savefig(savepath)
     plt.close('all')
 
-box_plot(subj, ym, ('year-month', 'subjectivity score',''),
+box_plot(subj, ym, ('year-month', 'subjectivity',''),
                     join(img_folder, 'subjectivity_scores.png'))
-box_plot(pol, ym, ('year-month', 'polarity score',''),
+box_plot(pol, ym, ('year-month', 'polarity',''),
                     join(img_folder, 'polarity_scores.png'))
