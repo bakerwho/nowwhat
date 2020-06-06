@@ -35,7 +35,7 @@ for col in ['polarity', 'subjectivity']:
 
 mids = {'polarity': 0, 'subjectivity':0.5}
 
-ym = all_subj_pol['ym']
+ym = data['all']['ym'].apply(lambda x: '/'.join(reversed(x.split('-'))))
 
 def box_plot(data, labels, xyt, savepath):
     plt.figure(figsize=(28, 10))
@@ -88,8 +88,4 @@ if __name__=='__main__':
                 sctxt = '_scatter' if sc else ''
                 plt_2_trajectories(v[col], ym, ('year-month', col,f'{k} news {col}'),
                                 join(img_folder, f'{k}_{col}_mean_up_down{sctxt}'),
-                                scatter=sc)
-                plt_2_trajectories(v[col], ym, ('year-month', col,f'{k} news'),
-                                join(img_folder, f'{k}_{col}_mid_up_down{sctxt}'),
-                                usemeans=False, mid=mids[col],
                                 scatter=sc)
