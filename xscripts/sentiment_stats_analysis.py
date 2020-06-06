@@ -83,8 +83,11 @@ if __name__=='__main__':
         for col in ['subjectivity', 'polarity']:
             box_plot(v[col], ym, ('year-month', col,f'{k} news {col}'),
                             join(img_folder, f'{k}_{col}_scores_boxplt'))
-            for sc in [True, False]:
-                sctxt = '_scatter' if sc else ''
-                plt_2_trajectories(v[col], ym, ('year-month', col,f'{k} news {col}'),
-                                join(img_folder, f'{k}_{col}_mean_up_down{sctxt}'),
-                                scatter=sc)
+            for usemeans in [True, False]:
+                mt = '_mn' if usemeans else ''
+                for sc in [True, False]:
+                    sctxt = '_scatter' if sc else ''
+                    plt_2_trajectories(v[col], ym,
+                            ('year-month', col,f'{k} news {col}'),
+                            join(img_folder, f'{k}_{col}_{mt}_up_down{sctxt}'),
+                            usemeans=usemeans, mid=mids[col], scatter=sc)
