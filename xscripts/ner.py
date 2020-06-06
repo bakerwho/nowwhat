@@ -92,7 +92,9 @@ def apply_ner(in_folder, out_folder, cond=None):
         fn = file.split('.')[0]
         ner_on_file(join(in_folder, file), join(out_folder, fn+'.csv'))
 
-apply_ner(in_folder, join(d_folder, 'xdata', 'ner_csv'), cond=lambda x: '16-11' in x)
+out_folder = join(d_folder, 'ner_csv')
+os.makedirs(out_folder, exist_ok=True)
+apply_ner(in_folder, out_folder, cond=lambda x: '16-11' in x)
 
 
 # t = spacy_ner("Narendra Modi on Friday moved the Ministry of External Affairs to criticize China on the Hong Kong Crisis", output=True)
