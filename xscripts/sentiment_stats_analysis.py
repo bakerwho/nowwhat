@@ -76,7 +76,7 @@ def plt_2_trajectories(data, labels, xyt, savepath, usemeans=True, mid=0,
     plt.xticklabels()
     plt.ylabel(xyt[1], fontsize=24)
     plt.title(xyt[2])
-    plt.savefig(savepath)
+    plt.savefig(savepath+'.png')
     plt.close('all')
 
 if __name__=='__main__':
