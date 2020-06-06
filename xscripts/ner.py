@@ -12,6 +12,8 @@ from nltk.tokenize import word_tokenize, sent_tokenize
 from nltk.tag import pos_tag
 from nltk.chunk import conlltags2tree, tree2conlltags
 
+nltk.download('punkt')
+
 import spacy
 from spacy import displacy
 from collections import Counter
