@@ -10,6 +10,10 @@ import ast
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 
+import seaborn as sns
+
+sns.set_style('whitegrid')
+
 now_folder = '/project2/jevans/aabir/NOWwhat/'
 d_folder = '/project2/jevans/aabir/NOWwhat/xdata'
 in_folder = join(d_folder, 'in_data')
