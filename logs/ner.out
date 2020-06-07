@@ -1,0 +1,5 @@
+run started at Sat Jun 6 10:51:12 CDT 2020
+[nltk_data] Error loading punkt: <urlopen error [Errno 110] Connection
+[nltk_data]     timed out>
+month /project2/jevans/aabir/NOWwhat/xdata/in_data/16-11-in.txt NER complete; stored in /project2/jevans/aabir/NOWwhat/xdata/ner_csv/16-11-in.csv
+run ended at Sat Jun 6 12:23:44 CDT 2020
