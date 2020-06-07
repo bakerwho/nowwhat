@@ -94,9 +94,9 @@ if __name__=='__main__':
                             join(img_folder, f'{k}_{col}_scores_boxplt'))
             for usemeans in [True, False]:
                 mt = '_mn' if usemeans else ''
-                for plttype in ['_scatter', '_box', '_box_mean', '_mean']:
+                for plttype in ['_box', '_box_mean', '_mean']:
                     plt_2_trajectories(v[col], ym,
                             ('year-month', col,f'{k} news {col}'),
                             join(img_folder, f'{k}_{col}{mt}_up_down{plttype}'),
-                            usemeans=usemeans, mid=mids[col], scatter=sc,
+                            usemeans=usemeans, mid=mids[col], plttype=plttype,
                             ylims=ylims[col])
