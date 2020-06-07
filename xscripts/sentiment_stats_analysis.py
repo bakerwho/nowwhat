@@ -34,6 +34,7 @@ for col in ['polarity', 'subjectivity']:
     data['political'][col] = data['political'][col].apply(lambda x : ast.literal_eval(x))
 
 mids = {'polarity': 0, 'subjectivity':0.5}
+ylims = {'polarity': (-1, 1), 'subjectivity':(0, 1)}
 
 ym = data['all']['ym'].apply(lambda x: '/'.join(reversed(x.split('-'))))
 
@@ -48,10 +49,11 @@ def box_plot(data, labels, xyt, savepath):
     plt.close('all')
 
 def plt_2_trajectories(data, labels, xyt, savepath, usemeans=True, mid=0,
-                        scatter=False):
+                        scatter=False, **kwargs):
     plt.figure(figsize=(28, 10))
     vals = {}
     assert len(data) == len(labels)
+    ylims = kwargs.pop('ylims', (0,1))
     if usemeans:
         means = [np.mean(line) for line in data]
     else:
@@ -64,17 +66,19 @@ def plt_2_trajectories(data, labels, xyt, savepath, usemeans=True, mid=0,
         for k, v in vals.items():
             ys = [y for line in v for y in line]
             xs = [xval for xval, line in enumerate(v) for y in line]
-            plt.scatter(xs, ys, alpha=0.4, c=cols[k], label=k)
+            plt.scatter(xs, ys, alpha=0.25, c=cols[k], label=k)
     else:
         for k, v in vals.items():
             ys = [np.mean(line) for line in v]
             xs = range(len(v))
-            plt.scatter(xs, ys, alpha=0.4, c=cols[k], label=k)
+            plt.plot(xs, ys, alpha=0.25, c=cols[k], label=k)
     plt.legend()
     plt.xlabel(xyt[0], fontsize=24)
-    plt.xticks(ticks=range(len(v)), labels=labels, rotation=45, fontsize=18)
+    plt.xticks(ticks=range(len(v)), labels=labels, rotation=45, fontsize=12,
+                        ha='center')
     plt.ylabel(xyt[1], fontsize=24)
-    plt.title(xyt[2])
+    plt.title(xyt[2], fontsize=28)
+    plt.ylim(*ylims)
     plt.savefig(savepath+'.png')
     plt.close('all')
 
@@ -86,8 +90,9 @@ if __name__=='__main__':
             for usemeans in [True, False]:
                 mt = '_mn' if usemeans else ''
                 for sc in [True, False]:
-                    sctxt = '_scatter' if sc else ''
+                    st = '_scatter' if sc else ''
                     plt_2_trajectories(v[col], ym,
                             ('year-month', col,f'{k} news {col}'),
-                            join(img_folder, f'{k}_{col}_{mt}_up_down{sctxt}'),
-                            usemeans=usemeans, mid=mids[col], scatter=sc)
+                            join(img_folder, f'{k}_{col}{mt}_up_down{st}'),
+                            usemeans=usemeans, mid=mids[col], scatter=sc,
+                            ylims=ylims[col])
