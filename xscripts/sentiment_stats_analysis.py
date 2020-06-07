@@ -34,22 +34,22 @@ for col in ['polarity', 'subjectivity']:
     data['political'][col] = data['political'][col].apply(lambda x : ast.literal_eval(x))
 
 mids = {'polarity': 0, 'subjectivity':0.5}
-ylims = {'polarity': (-1, 1), 'subjectivity':(0, 1)}
+ylims = {'polarity': (-1.1, 1.1), 'subjectivity':(-0.1, 1.1)}
 
 ym = data['all']['ym'].apply(lambda x: '/'.join(reversed(x.split('-'))))
 
 def box_plot(data, labels, xyt, savepath):
     plt.figure(figsize=(28, 10))
-    plt.boxplot(data, labels=labels)
+    plt.boxplot(data, positions=range(len(data)), labels=labels)
     plt.xlabel(xyt[0], fontsize=24)
     plt.xticks(rotation=45, fontsize=18)
     plt.ylabel(xyt[1], fontsize=24)
     plt.title(xyt[2])
-    plt.savefig(savepath+'.png')
+    plt.savefig(savepath+'.png', bbox_inches='tight')
     plt.close('all')
 
 def plt_2_trajectories(data, labels, xyt, savepath, usemeans=True, mid=0,
-                        scatter=False, **kwargs):
+                        plttype='scatter', **kwargs):
     plt.figure(figsize=(28, 10))
     vals = {}
     assert len(data) == len(labels)
@@ -62,17 +62,21 @@ def plt_2_trajectories(data, labels, xyt, savepath, usemeans=True, mid=0,
     vals['down'] = [np.array([x for x in line if x<means[i]]) for i, line in enumerate(data)]
     cols = {'up':'green', 'down':'red'}
     plt.plot(range(len(labels)), means, lw=2, c=cm.Oranges(0.8))
-    plt.axhline(y=mid, c=cm.Greys(0.8), alpha=0.75)
-    if scatter:
+    plt.axhline(y=mid, c=cm.Greys(0.8), alpha=0.4)
+    if 'scatter' in plttype:
         for k, v in vals.items():
             ys = [y for line in v for y in line]
             xs = [xval for xval, line in enumerate(v) for y in line]
             plt.scatter(xs, ys, alpha=0.25, c=cols[k], label=k)
-    else:
+    if 'mean' in plttype:
         for k, v in vals.items():
             ys = [np.mean(line) for line in v]
             xs = range(len(v))
             plt.plot(xs, ys, alpha=0.25, c=cols[k], label=k)
+    if 'box' in plttype:
+        for k, v in vals.items():
+            plt.boxplot(v, positions=range(len(data)), label=k
+                        boxprops={'c':cols[k]})
     plt.legend()
     plt.xlabel(xyt[0], fontsize=24)
     plt.xticks(ticks=range(len(v)), labels=labels, rotation=45, fontsize=12,
@@ -80,7 +84,7 @@ def plt_2_trajectories(data, labels, xyt, savepath, usemeans=True, mid=0,
     plt.ylabel(xyt[1], fontsize=24)
     plt.title(xyt[2], fontsize=28)
     plt.ylim(*ylims)
-    plt.savefig(savepath+'.png')
+    plt.savefig(savepath+'.png', bbox_inches='tight')
     plt.close('all')
 
 if __name__=='__main__':
@@ -90,10 +94,9 @@ if __name__=='__main__':
                             join(img_folder, f'{k}_{col}_scores_boxplt'))
             for usemeans in [True, False]:
                 mt = '_mn' if usemeans else ''
-                for sc in [True, False]:
-                    st = '_scatter' if sc else ''
+                for plttype in ['_scatter', '_box', '_box_mean', '_mean']:
                     plt_2_trajectories(v[col], ym,
                             ('year-month', col,f'{k} news {col}'),
-                            join(img_folder, f'{k}_{col}{mt}_up_down{st}'),
+                            join(img_folder, f'{k}_{col}{mt}_up_down{plttype}'),
                             usemeans=usemeans, mid=mids[col], scatter=sc,
                             ylims=ylims[col])
