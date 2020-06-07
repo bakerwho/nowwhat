@@ -75,7 +75,7 @@ def plt_2_trajectories(data, labels, xyt, savepath, usemeans=True, mid=0,
             plt.plot(xs, ys, alpha=0.25, c=cols[k], label=k)
     if 'box' in plttype:
         for k, v in vals.items():
-            plt.boxplot(v, positions=range(len(data)), label=k,
+            plt.boxplot(v, positions=range(len(data)),
                         boxprops={'c':cols[k]})
     plt.legend()
     plt.xlabel(xyt[0], fontsize=24)
