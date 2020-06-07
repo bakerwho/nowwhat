@@ -62,6 +62,7 @@ def plt_2_trajectories(data, labels, xyt, savepath, usemeans=True, mid=0,
     vals['down'] = [np.array([x for x in line if x<means[i]]) for i, line in enumerate(data)]
     cols = {'up':'green', 'down':'red'}
     plt.plot(range(len(labels)), means, lw=2, c=cm.Oranges(0.8))
+    plt.axhline(y=mid, c=cm.Greys(0.8), alpha=0.75)
     if scatter:
         for k, v in vals.items():
             ys = [y for line in v for y in line]
