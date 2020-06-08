@@ -167,7 +167,7 @@ if __name__=='__main__':
                 dt = box_plot(v[col], ym, ('', col,f'{k} news {col}'),
                             join(folders[col], f'{k}_{col}_scores_boxplot'),
                             means=usemeans, ylims=ylims[col])
-                if usemeans"
+                if usemeans:
                     outlier_ct(dt, mids[col], ym,
                         ('', '#',f'{k} news {col} outliers'),
                         join(folders[col], f'{k}_{col}_outliers'))
