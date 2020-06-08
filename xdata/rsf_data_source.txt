@@ -1,0 +1,5 @@
+https://rsf.org/en/ranking
+
+https://tcdata360.worldbank.org/indicators/h3f86901f?country=BRA&indicator=32416&viz=line_chart&years=2001,2019
+
+https://tcdata360.worldbank.org/indicators/h3f86901f
