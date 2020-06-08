@@ -66,8 +66,8 @@ def outlier_ct(dt, mid, labels, xyt, savepath):
     for line in outliers:
         up_cts.append(0)
         down_cts.append(0)
-        for x in line:
-            if x >= mid:
+        for (x,y) in line:
+            if y >= mid:
                 up_cts[-1] += 1
             else:
                 down_cts[-1] += 1
