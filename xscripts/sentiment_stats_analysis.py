@@ -82,7 +82,7 @@ def outlier_ct(dt, mid, labels, xyt, savepath, ratio=False):
     r1 = np.arange(len(up_cts))
     xs = [r1-barWidth/2, r1+barWidth/2]
     for i, ydata in enumerate([up_cts, down_cts]):
-        plt.bar(xs[i], ydata, c=cols[i], width=barWidth,
+        plt.bar(xs[i], ydata, color=cols[i], width=barWidth,
                             edgecolor='white', label=labs[i])
     plt.xlabel(xyt[0], fontsize=20)
     plt.xticks(ticks=range(len(outliers)), labels=labels, rotation=45, fontsize=10,
