@@ -24,7 +24,8 @@ result_folder = join(now_folder, 'resultdata')
 img_folder = join(now_folder, 'img')
 folders = {k:join(img_folder, k) for k in ['polarity', 'subjectivity']}
 
-os.makedirs(list(folders.values()), exist_ok=True)
+for f in folders.values():
+    os.makedirs(f, exist_ok=True)
 
 data = {}
 
