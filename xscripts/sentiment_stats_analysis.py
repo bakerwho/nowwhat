@@ -137,9 +137,10 @@ def plt_article_counts(data, labels, xyt, savepath, ratio=False):
     plt.figure(figsize=(28, 10))
     if not ratio:
         for k, v in data.items():
-            plt.plot(range(len(data)), [len(x) for x in data], label=f'{k} article count')
+            plt.plot(range(len(v)), [len(x['polarity']) for i, x in v.iterrows()], label=f'{k} article count')
     else:
-        ynum = [len(data['political'])/len(x) for i, x in enumerate(data['all'])]
+        ynum = [len(data['political'].iloc[i]['polarity'])/len(x['polarity']
+                                    ) for i, x in data['all'].iterrows()]
         plt.plot(range(len(ynum)), ynum, label='political article ratio')
         savepath = savepath + '_ratio'
     plt.xticks(ticks=range(len(data)), labels=labels, rotation=45, fontsize=10,
