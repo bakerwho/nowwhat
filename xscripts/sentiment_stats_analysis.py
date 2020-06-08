@@ -139,15 +139,16 @@ def plt_article_counts(data, labels, xyt, savepath, ratio=False):
         for k, v in data.items():
             plt.plot(range(len(v)), [len(x['polarity']) for i, x in v.iterrows()], label=f'{k} article count')
     else:
-        ynum = [len(data['political'].iloc[i]['polarity'])/len(x['polarity']
+        v = [len(data['political'].iloc[i]['polarity'])/len(x['polarity']
                                     ) for i, x in data['all'].iterrows()]
-        plt.plot(range(len(ynum)), ynum, label='political article ratio')
+        plt.plot(range(len(v)), v, label='political article ratio')
         savepath = savepath + '_ratio'
-    plt.xticks(ticks=range(len(data)), labels=labels, rotation=45, fontsize=10,
+    plt.xticks(ticks=range(len(v)), labels=labels, rotation=45, fontsize=10,
                         ha='center')
     plt.ylabel(xyt[1], fontsize=20)
     plt.title(xyt[2], fontsize=24)
     plt.legend()
+    plt.ylim(0)
     if savepath is not None:
         plt.savefig(savepath+'.png', bbox_inches='tight')
     plt.close('all')
