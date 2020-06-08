@@ -79,7 +79,7 @@ def outlier_ct(dt, mid, labels, xyt, savepath, ratio=False):
     labs = ['high outliers', 'low outliers']
     plt.figure(figsize=(28, 10))
     barWidth = 0.4
-    r1 = np.arange(len(bars1))
+    r1 = np.arange(len(up_cts))
     xs = [r1-barWidth/2, r1+barWidth/2]
     for i, ydata in enumerate([up_cts, down_cts]):
         plt.bar(xs[i], ydata, c=cols[i], width=barWidth,
