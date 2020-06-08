@@ -163,13 +163,14 @@ def plt_article_counts(data, labels, xyt, savepath, ratio=False):
 if __name__=='__main__':
     for k, v in data.items():
         for col in ['subjectivity', 'polarity']:
-            outlier_ct(dt, mids[col], ym,
-                    ('', '#',f'{k} news {col} outliers'),
-                    join(folders[col], f'{k}_{col}_outliers'))
             for usemeans in [True, False]:
                 dt = box_plot(v[col], ym, ('', col,f'{k} news {col}'),
                             join(folders[col], f'{k}_{col}_scores_boxplot'),
                             means=usemeans, ylims=ylims[col])
+                if usemeans"
+                    outlier_ct(dt, mids[col], ym,
+                        ('', '#',f'{k} news {col} outliers'),
+                        join(folders[col], f'{k}_{col}_outliers'))
                 mt = '_mn' if usemeans else ''
                 for plttype in ['_box', '_box_mean', '_mean']:
                     plt_2_trajectories(v[col], ym,
@@ -180,6 +181,7 @@ if __name__=='__main__':
     for ratio in [True, False]:
         plt_article_counts(data, ym, ('', '#',f'article counts'),
                 join(img_folder, f'article_counts'), ratio=ratio)
+
 """
 usemeans=False
 col='subjectivity'
