@@ -22,6 +22,9 @@ us_folder = join(d_folder, 'us_data')
 corpus_folder = join(d_folder, 'corpus')
 result_folder = join(now_folder, 'resultdata')
 img_folder = join(now_folder, 'img')
+folders = {k:join(img_folder, k) for k in ['polarity', 'subjectivity']}
+
+os.makedirs(list(folders.values()), exist_ok=True)
 
 data = {}
 
@@ -81,7 +84,6 @@ def outlier_ct(dt, mid, labels, xyt, savepath):
                         ha='center')
     plt.ylabel(xyt[1], fontsize=20)
     plt.title(xyt[2], fontsize=24)
-    plt.ylim(*ylims)
     plt.legend()
     if savepath is not None:
         plt.savefig(savepath+'_outlier_ct.png', bbox_inches='tight')
@@ -134,17 +136,17 @@ if __name__=='__main__':
         for col in ['subjectivity', 'polarity']:
             for usemeans in [True, False]:
                 dt = box_plot(v[col], ym, ('', col,f'{k} news {col}'),
-                            join(img_folder, f'{k}_{col}_scores_boxplot'),
+                            join(folders[col], f'{k}_{col}_scores_boxplot'),
                             means=usemeans, ylims=ylims[col])
                 if usemeans:
                     outlier_ct(dt, mids[col], ym,
                             ('', '#',f'{k} news {col} outliers'),
-                            join(img_folder, f'{k}_{col}_outliers'))
+                            join(folders[col], f'{k}_{col}_outliers'))
                 mt = '_mn' if usemeans else ''
                 for plttype in ['_box', '_box_mean', '_mean']:
                     plt_2_trajectories(v[col], ym,
                             ('', col,f'{k} news {col}'),
-                            join(img_folder, f'{k}_{col}{mt}_up_down{plttype}'),
+                            join(folders[col], f'{k}_{col}{mt}_up_down{plttype}'),
                             usemeans=usemeans, mid=mids[col], plttype=plttype,
                             ylims=ylims[col])
 
