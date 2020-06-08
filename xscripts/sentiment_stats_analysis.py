@@ -64,7 +64,7 @@ def box_plot(data, labels, xyt, savepath, means=False, toprint=False, **kwargs):
     plt.close('all')
     return dt
 
-def outlier_ct(dt, mid, labels, xyt, savepath):
+def outlier_ct(dt, mid, labels, xyt, savepath, ratio=False):
     outliers = [x.get_xydata() for x in dt['fliers']]
     up_cts, down_cts = [], []
     for line in outliers:
@@ -78,8 +78,12 @@ def outlier_ct(dt, mid, labels, xyt, savepath):
     cols = ['green', 'red']
     labs = ['high outliers', 'low outliers']
     plt.figure(figsize=(28, 10))
+    barWidth = 0.4
+    r1 = np.arange(len(bars1))
+    xs = [r1-barWidth/2, r1+barWidth/2]
     for i, ydata in enumerate([up_cts, down_cts]):
-        plt.plot(range(len(ydata)), up_cts, c=cols[i], label=labs[i])
+        plt.bar(xs[i], ydata, c=cols[i], width=barWidth,
+                            edgecolor='white', label=labs[i])
     plt.xlabel(xyt[0], fontsize=20)
     plt.xticks(ticks=range(len(outliers)), labels=labels, rotation=45, fontsize=10,
                         ha='center')
@@ -149,6 +153,8 @@ def plt_article_counts(data, labels, xyt, savepath, ratio=False):
     plt.title(xyt[2], fontsize=24)
     plt.legend()
     plt.ylim(0)
+    if ratio:
+        plt.ylim(0, 1)
     if savepath is not None:
         plt.savefig(savepath+'.png', bbox_inches='tight')
     plt.close('all')
