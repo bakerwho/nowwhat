@@ -138,7 +138,8 @@ if __name__=='__main__':
                             means=usemeans, ylims=ylims[col])
                 if usemeans:
                     outlier_ct(dt, mids[col], ym,
-                            ('', '#',f'{k} news {col} outliers'), savepath)
+                            ('', '#',f'{k} news {col} outliers'),
+                            join(img_folder, f'{k}_{col}_outliers')
                 mt = '_mn' if usemeans else ''
                 for plttype in ['_box', '_box_mean', '_mean']:
                     plt_2_trajectories(v[col], ym,
