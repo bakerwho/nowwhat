@@ -42,10 +42,10 @@ ylims = {'polarity': (-1.1, 1.1), 'subjectivity':(-0.1, 1.1)}
 
 ym = data['all']['ym'].apply(lambda x: '/'.join(reversed(x.split('-'))))
 
-def box_plot(data, labels, xyt, savepath, means=False, **kwargs):
+def box_plot(data, labels, xyt, savepath, means=False, toprint=False, **kwargs):
     plt.figure(figsize=(28, 10))
     ylims = kwargs.pop('ylims', (0,1))
-    plt.boxplot(data, positions=range(len(data)), labels=labels)
+    dt = plt.boxplot(data, positions=range(len(data)), labels=labels)
     if means:
         plt.plot(range(len(data)), [np.mean(x) for x in data], label='mean')
     plt.xlabel(xyt[0], fontsize=20)
@@ -55,8 +55,38 @@ def box_plot(data, labels, xyt, savepath, means=False, **kwargs):
     plt.title(xyt[2], fontsize=24)
     plt.ylim(*ylims)
     plt.legend()
-    plt.savefig(savepath+'.png', bbox_inches='tight')
+    if savepath is not None:
+        plt.savefig(savepath+'.png', bbox_inches='tight')
     plt.close('all')
+    return dt
+
+def outlier_ct(dt, mid, labels, xyt, savepath):
+    outliers = [x.get_xydata() for x in dt['fliers']]
+    up_cts, down_cts = [], []
+    for line in outliers:
+        up_cts.append(0)
+        down_cts.append(0)
+        for x in line:
+            if x >= mid:
+                up_cts[-1] += 1
+            else:
+                down_cts[-1] += 1
+    cols = ['green', 'red']
+    labs = ['high outliers', 'low outliers']
+    plt.figure(figsize=(28, 10))
+    for i, ydata in enumerate([up_cts, down_cts]):
+        plt.plot(range(len(ydata)), up_cts, c=cols[i], label=labs[i])
+    plt.xlabel(xyt[0], fontsize=20)
+    plt.xticks(ticks=range(len(outliers)), labels=labels, rotation=45, fontsize=10,
+                        ha='center')
+    plt.ylabel(xyt[1], fontsize=20)
+    plt.title(xyt[2], fontsize=24)
+    plt.ylim(*ylims)
+    plt.legend()
+    if savepath is not None:
+        plt.savefig(savepath+'_outlier_ct.png', bbox_inches='tight')
+    plt.close('all')
+
 
 def plt_2_trajectories(data, labels, xyt, savepath, usemeans=True, mid=0,
                         plttype='scatter', **kwargs):
@@ -103,13 +133,25 @@ if __name__=='__main__':
     for k, v in data.items():
         for col in ['subjectivity', 'polarity']:
             for usemeans in [True, False]:
-                box_plot(v[col], ym, ('year-month', col,f'{k} news {col}'),
+                dt = box_plot(v[col], ym, ('', col,f'{k} news {col}'),
                             join(img_folder, f'{k}_{col}_scores_boxplot'),
                             means=usemeans, ylims=ylims[col])
+                if usemeans:
+                    outlier_ct(dt, mids[col], ym,
+                            ('', '#',f'{k} news {col} outliers'), savepath)
                 mt = '_mn' if usemeans else ''
                 for plttype in ['_box', '_box_mean', '_mean']:
                     plt_2_trajectories(v[col], ym,
-                            ('year-month', col,f'{k} news {col}'),
+                            ('', col,f'{k} news {col}'),
                             join(img_folder, f'{k}_{col}{mt}_up_down{plttype}'),
                             usemeans=usemeans, mid=mids[col], plttype=plttype,
                             ylims=ylims[col])
+
+"""
+usemeans=False
+col='subjectivity'
+k = 'political'
+v = data[k]
+dt = box_plot(v[col], ym, ('year-month', col,f'{k} news {col}'),
+            None, means=usemeans, ylims=ylims[col])
+"""
