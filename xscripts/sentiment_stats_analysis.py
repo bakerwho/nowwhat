@@ -132,17 +132,36 @@ def plt_2_trajectories(data, labels, xyt, savepath, usemeans=True, mid=0,
     plt.savefig(savepath+'.png', bbox_inches='tight')
     plt.close('all')
 
+
+def plt_article_counts(data, labels, xyt, savepath, ratio=False):
+    plt.figure(figsize=(28, 10))
+    if not ratio:
+        for k, v in data.items():
+            plt.plot(range(len(data)), [len(x) for x in data], label=f'{k} article count')
+    else:
+        ynum = [len(data['political'])/len(x) for i, x in enumerate(data['all'])]
+        plt.plot(range(len(ynum)), ynum, label='political article ratio')
+        savepath = savepath + '_ratio'
+    plt.xticks(ticks=range(len(data)), labels=labels, rotation=45, fontsize=10,
+                        ha='center')
+    plt.ylabel(xyt[1], fontsize=20)
+    plt.title(xyt[2], fontsize=24)
+    plt.legend()
+    if savepath is not None:
+        plt.savefig(savepath+'.png', bbox_inches='tight')
+    plt.close('all')
+
+
 if __name__=='__main__':
     for k, v in data.items():
         for col in ['subjectivity', 'polarity']:
+            outlier_ct(dt, mids[col], ym,
+                    ('', '#',f'{k} news {col} outliers'),
+                    join(folders[col], f'{k}_{col}_outliers'))
             for usemeans in [True, False]:
                 dt = box_plot(v[col], ym, ('', col,f'{k} news {col}'),
                             join(folders[col], f'{k}_{col}_scores_boxplot'),
                             means=usemeans, ylims=ylims[col])
-                if usemeans:
-                    outlier_ct(dt, mids[col], ym,
-                            ('', '#',f'{k} news {col} outliers'),
-                            join(folders[col], f'{k}_{col}_outliers'))
                 mt = '_mn' if usemeans else ''
                 for plttype in ['_box', '_box_mean', '_mean']:
                     plt_2_trajectories(v[col], ym,
@@ -150,12 +169,12 @@ if __name__=='__main__':
                             join(folders[col], f'{k}_{col}{mt}_up_down{plttype}'),
                             usemeans=usemeans, mid=mids[col], plttype=plttype,
                             ylims=ylims[col])
-
+    for ratio in [True, False]:
+        plt_article_counts(data, ym, ('', '#',f'article counts'),
+                join(img_folder, f'article_counts'), ratio=ratio)
 """
 usemeans=False
 col='subjectivity'
 k = 'political'
 v = data[k]
-dt = box_plot(v[col], ym, ('year-month', col,f'{k} news {col}'),
-            None, means=usemeans, ylims=ylims[col])
 """
