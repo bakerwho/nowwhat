@@ -27,9 +27,9 @@ print(years)
 
 def files_by_datatype(files):
     files_by_dt = defaultdict(list)
-    dts = ['lexicon', 'db', 'text', 'wlp', 'sources']
+    datatypes = ['lexicon', 'db', 'text', 'wlp', 'sources']
     for file in files:
-        for dt in dts:
+        for dt in datatypes:
             if dt in file:
                 files_by_dt[dt].append(file)
     return files_by_dt
@@ -37,33 +37,33 @@ def files_by_datatype(files):
 files_by_dt = files_by_datatype(files)
 print({k:len(v) for k, v in files_by_dt.items()})
 
-def unzip_files(filenames, sourcepath, destpath, condition=lambda x: True,
+def unzip_files(zipfilenames, sourcepath, destpath, zip_cond=lambda x: True,
                     del_cond=lambda x: False):
     """
-        unzips zip files under filenames, deletes unzipped files
+        unzips zip files under zipfilenames, deletes unzipped files
     """
     successes = 0
     tries = 0
-    for file in filenames:
-        if not condition(file):
+    for zipfile in zipfilenames:
+        if not zip_cond(zipfile):
             continue
-        print(f'unzipping file {file}')
+        print(f'unzipping zipfile {zipfile}')
         tries += 1
         try:
-            ym = tuple(re.findall(r'\d+', file))
+            ym = tuple(re.findall(r'\d+', zipfile))
             print(ym)
             assert len(ym) == 2, "no year/month found"
             y, m = ym
             date = f"{y}-{m}"
-            dts = ['lexicon', 'db', 'text', 'wlp', 'sources']
-            dt = [d for d in dts if d in file][0]
-            dpath = join(destpath, dt, date)
+            datatypes = ['lexicon', 'db', 'text', 'wlp', 'sources']
+            dt = [d for d in datatypes if d in zipfile][0]
+            dpath = join(destpath, dt)
             os.makedirs(dpath, exist_ok = True)
         except Exception as e:
             print(f"Exception during folder creation: {e}")
             dpath = destpath
         try:
-            spath = join(sourcepath, file)
+            spath = join(sourcepath, zipfile)
             with ZipFile(spath, 'r') as zipObj:
                 zipObj.extractall(dpath)
             successes += 1
@@ -79,16 +79,16 @@ def unzip_files(filenames, sourcepath, destpath, condition=lambda x: True,
             print(f"removed files: {'; '.join(delete_files)}")
         except Exception as e:
             print(f"Exception while clearing unwanted files: {e}")
-    print(f"\n\nOut of {len(filenames)} files: tried {tries} and \
+    print(f"\n\nOut of {len(zipfilenames)} files: tried {tries} and \
 extracted {successes}\n\n")
 
 keep_in_us = lambda x: not ('in' in x.lower() or 'us' in x.lower())
 keep_us = lambda x: not ('us' in x.lower())
 
 if __name__=="__main__":
-    unzip_files(files_by_dt['text'], NOWfolder, datafolder)
-    unzip_files(files_by_dt['lexicon'], NOWfolder, datafolder)
-    unzip_files(files_by_dt['sources'], NOWfolder, datafolder)
+    unzip_files(files_by_dt['text'][0], NOWfolder, datafolder)
+    unzip_files(files_by_dt['lexicon'][0], NOWfolder, datafolder)
+    unzip_files(files_by_dt['sources'][0], NOWfolder, datafolder)
     #unzip_files(anomalies, NOWfolder, datafolder)
     #unzip_files(files_by_dt[k], NOWfolder, datafolder, condition=lambda x: '16' in x)
 
