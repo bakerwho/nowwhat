@@ -5,8 +5,8 @@ import string
 import re
 from collections import Counter, defaultdict
 
-#NOWfolder = '/project2/jevans/Davies_corpora/NOW/'
-NOWfolder = '.'
+NOWfolder = '/project2/jevans/Davies_corpora/NOW/'
+#NOWfolder = '.'
 datafolder = '/project2/jevans/aabir/NOWwhat/data'
 
 
