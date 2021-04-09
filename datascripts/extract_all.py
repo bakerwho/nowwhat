@@ -5,8 +5,11 @@ import string
 import re
 from collections import Counter, defaultdict
 
-NOWfolder = '/project2/jevans/Davies_corpora/NOW/'
+#NOWfolder = '/project2/jevans/Davies_corpora/NOW/'
+NOWfolder = '.'
 datafolder = '/project2/jevans/aabir/NOWwhat/data'
+
+
 
 files = os.listdir(NOWfolder)
 anomalies = [f for f in files if len(re.findall(r'\d+', f))==1]
@@ -36,6 +39,9 @@ print({k:len(v) for k, v in files_by_dt.items()})
 
 def unzip_files(filenames, sourcepath, destpath, condition=lambda x: True,
                     del_cond=lambda x: False):
+    """
+        unzips zip files under filenames, deletes unzipped files
+    """
     successes = 0
     tries = 0
     for file in filenames:
@@ -77,12 +83,14 @@ def unzip_files(filenames, sourcepath, destpath, condition=lambda x: True,
 extracted {successes}\n\n")
 
 keep_in_us = lambda x: not ('in' in x.lower() or 'us' in x.lower())
+keep_us = lambda x: not ('us' in x.lower())
 
 if __name__=="__main__":
     unzip_files(files_by_dt['text'], NOWfolder, datafolder)
     unzip_files(files_by_dt['lexicon'], NOWfolder, datafolder)
-    #unzip_files(files_by_dt['sources'], NOWfolder, datafolder)
+    unzip_files(files_by_dt['sources'], NOWfolder, datafolder)
     #unzip_files(anomalies, NOWfolder, datafolder)
+    #unzip_files(files_by_dt[k], NOWfolder, datafolder, condition=lambda x: '16' in x)
 
 
 
