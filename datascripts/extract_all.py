@@ -57,16 +57,21 @@ def unzip_files(zipfilenames, sourcepath, destpath, zip_cond=lambda x: True,
             date = f"{y}-{m}"
             datatypes = ['lexicon', 'db', 'text', 'wlp', 'sources']
             dt = [d for d in datatypes if d in zipfile][0]
-            dpath = join(destpath, dt)
+            dpath = join(destpath, dt, date)
             os.makedirs(dpath, exist_ok = True)
+            print(f"Destination set to {dpath}")
         except Exception as e:
-            print(f"Exception during folder creation: {e}")
+            print(f"Exception raised: {e}")
             dpath = destpath
+            print(f"Destination set to {dpath}")
+        init_filecount = len(os.listdir(dpath))
         try:
             spath = join(sourcepath, zipfile)
             with ZipFile(spath, 'r') as zipObj:
                 zipObj.extractall(dpath)
             successes += 1
+            mid_filecount = len(os.listdir(dpath))
+            print(f'Extracted {mid_filecount - init_filecount} files')
         except Exception as e:
             print(f"Exception while unzipping: {e}")
         try:
@@ -76,19 +81,24 @@ def unzip_files(zipfilenames, sourcepath, destpath, zip_cond=lambda x: True,
                 fpath = join(dpath, file)
                 if os.path.exists(fpath) and os.path.isfile(fpath):
                     os.remove(fpath)
-            print(f"removed files: {'; '.join(delete_files)}")
+            final_filecount = len(os.listdir(dpath))
+            print(f"removed {len(delete_files)} files: {'; '.join(delete_files)}")
         except Exception as e:
             print(f"Exception while clearing unwanted files: {e}")
     print(f"\n\nOut of {len(zipfilenames)} files: tried {tries} and \
 extracted {successes}\n\n")
 
-keep_in_us = lambda x: not ('in' in x.lower() or 'us' in x.lower())
-keep_us = lambda x: not ('us' in x.lower())
+del_non_in_us = lambda x: not ('in' in x.lower() or 'us' in x.lower())
+del_non_us = lambda x: not ('us' in x.lower())
 
 if __name__=="__main__":
-    unzip_files(files_by_dt['text'][0], NOWfolder, datafolder)
-    unzip_files(files_by_dt['lexicon'][0], NOWfolder, datafolder)
-    unzip_files(files_by_dt['sources'][0], NOWfolder, datafolder)
+    num_files = int(input('Enter no. of Zipfiles to extract:\t'))
+    unzip_files(files_by_dt['text'][0:num_files], NOWfolder, datafolder,
+                del_cond=del_non_us)
+    ea.unzip_files(ea.files_by_dt['lexicon'][0:num_files], ea.NOWfolder,
+                    ea.datafolder)
+    ea.unzip_files(ea.files_by_dt['sources'][0:num_files], ea.NOWfolder,
+                    ea.datafolder)
     #unzip_files(anomalies, NOWfolder, datafolder)
     #unzip_files(files_by_dt[k], NOWfolder, datafolder, condition=lambda x: '16' in x)
 
