@@ -57,7 +57,10 @@ def unzip_files(zipfilenames, sourcepath, destpath, zip_cond=lambda x: True,
             date = f"{y}-{m}"
             datatypes = ['lexicon', 'db', 'text', 'wlp', 'sources']
             dt = [d for d in datatypes if d in zipfile][0]
-            dpath = join(destpath, dt, date)
+            if dt == 'text':
+                dpath = join(destpath, dt, date)
+            else:
+                dpath = join(destpath, dt)
             os.makedirs(dpath, exist_ok = True)
             print(f"Destination set to {dpath}")
         except Exception as e:
@@ -85,8 +88,8 @@ def unzip_files(zipfilenames, sourcepath, destpath, zip_cond=lambda x: True,
             print(f"removed {len(delete_files)} files: {'; '.join(delete_files)}")
         except Exception as e:
             print(f"Exception while clearing unwanted files: {e}")
-    print(f"\n\nOut of {len(zipfilenames)} files: tried {tries} and \
-extracted {successes}\n\n")
+    print(f"\n\nOut of {len(zipfilenames)} Zipfiles: tried {tries} and \
+    extracted {successes}\n\n")
 
 del_non_in_us = lambda x: not ('in' in x.lower() or 'us' in x.lower())
 del_non_us = lambda x: not ('us' in x.lower())
