@@ -95,12 +95,13 @@ del_non_in_us = lambda x: not ('in' in x.lower() or 'us' in x.lower())
 del_non_us = lambda x: not ('us' in x.lower())
 
 if __name__=="__main__":
-    num_files = int(input('Enter no. of Zipfiles to extract:\t'))
-    unzip_files(files_by_dt['text'][0:num_files], NOWfolder, datafolder,
+    #num_files = 100000
+    #num_files = int(input('Enter no. of Zipfiles to extract:\t'))
+    unzip_files(files_by_dt['text'], NOWfolder, datafolder,
                 del_cond=del_non_us)
-    ea.unzip_files(ea.files_by_dt['lexicon'][0:num_files], ea.NOWfolder,
+    ea.unzip_files(ea.files_by_dt['lexicon'], ea.NOWfolder,
                     ea.datafolder)
-    ea.unzip_files(ea.files_by_dt['sources'][0:num_files], ea.NOWfolder,
+    ea.unzip_files(ea.files_by_dt['sources'], ea.NOWfolder,
                     ea.datafolder)
     #unzip_files(anomalies, NOWfolder, datafolder)
     #unzip_files(files_by_dt[k], NOWfolder, datafolder, condition=lambda x: '16' in x)
