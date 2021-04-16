@@ -1,11 +1,9 @@
 import os
 from os.path import join
-from zipfile import ZipFile
 import string
 import re
 
-from utils import *
-from datastructures import Sources
+from nowwhat.datastructures import Sources
 
 sourcespath = './data/sources/'
 
