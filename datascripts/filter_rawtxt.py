@@ -18,7 +18,7 @@ def iterate_over_files(datapath, txtfunc=lambda x: None, verbose=True):
                 if '.txt' not in txt:
                     continue
                 file_ct += 1
-                if foldername+'-us' not in txt:
+                if foldername+'-us' not in txt.lower():
                     print(f"Unexpected filename: {txt}")
                 txtpath = join(datapath, foldername, txt)
                 try:
