@@ -91,18 +91,29 @@ def unzip_files(zipfilenames, sourcepath, destpath, zip_cond=lambda x: True,
     print(f"\n\nOut of {len(zipfilenames)} Zipfiles: tried {tries} and \
     extracted {successes}\n\n")
 
+def check_extraction(folderlist):
+    ct = 0
+    for y in range(10, 22):
+        for m in range(1, 13):
+            ym_str = f"{str(y).zfill(2)}-{str(m).zfill(2)}"
+            if ym_str not in folderlist:
+                ct+=1
+                print(ym_str)
+    print(f'Total {ct} year-month folders missing')
+
 del_non_in_us = lambda x: not ('in' in x.lower() or 'us' in x.lower())
 del_non_us = lambda x: not ('us' in x.lower())
+
 
 if __name__=="__main__":
     #num_files = 100000
     #num_files = int(input('Enter no. of Zipfiles to extract:\t'))
     unzip_files(files_by_dt['text'], NOWfolder, datafolder,
                 del_cond=del_non_us)
-    ea.unzip_files(ea.files_by_dt['lexicon'], ea.NOWfolder,
-                    ea.datafolder)
-    ea.unzip_files(ea.files_by_dt['sources'], ea.NOWfolder,
-                    ea.datafolder)
+    unzip_files(files_by_dt['lexicon'], NOWfolder,
+                    datafolder)
+    unzip_files(files_by_dt['sources'], NOWfolder,
+                    datafolder)
     #unzip_files(anomalies, NOWfolder, datafolder)
     #unzip_files(files_by_dt[k], NOWfolder, datafolder, condition=lambda x: '16' in x)
 
