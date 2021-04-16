@@ -3,3 +3,6 @@ resultdata/
 xdata/in_data
 xdata/us_data
 xdata/src_data
+*__pychache__*
+*egg-info*
+*.ipynb_checkpoints
