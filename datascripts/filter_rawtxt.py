@@ -5,6 +5,7 @@ import string
 import re
 
 def iterate_over_files(datapath, txtfunc=lambda x: None, verbose=True):
+    print(f"{datapath} contains {len(os.listdir(datapath))} files/folders")
     for y in range(10, 22):
         for m in range(1, 13):
             y, m = str(y), str(m).zfill(2)
@@ -19,7 +20,7 @@ def iterate_over_files(datapath, txtfunc=lambda x: None, verbose=True):
                 file_ct += 1
                 if foldername+'-us' not in txt:
                     print(f"Unexpected filename: {txt}")
-                txtpath = join(datapath, foldername, txtpath)
+                txtpath = join(datapath, foldername, txt)
                 try:
                     txtfunc(txtpath)
                 except:
@@ -27,3 +28,6 @@ def iterate_over_files(datapath, txtfunc=lambda x: None, verbose=True):
                     fail_ct += 1
             if verbose:
                 print(f"{folderpath}: processed {file_ct-fail_ct}/{file_ct} .txt files")
+
+if __name__=='__main__':
+    iterate_over_files('./data/text/')
